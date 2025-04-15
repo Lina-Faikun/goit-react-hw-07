@@ -1,23 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchContacts, addContact, deleteContact } from './contactsOps';
-import { createSelector } from 'reselect';  
-
+import { createSelector } from 'reselect';
 
 const initialState = {
   items: [],
   loading: false,
   error: null,
-  filter: '',  
 };
 
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
-  reducers: {
-    setFilter(state, action) {
-      state.filter = action.payload;
-    }
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchContacts.pending, (state) => {
@@ -51,7 +45,7 @@ const contactsSlice = createSlice({
       })
       .addCase(deleteContact.fulfilled, (state, action) => {
         state.loading = false;
-        state.items = state.items.filter((contact) => contact.id !== action.payload.id);
+        state.items = state.items.filter((contact) => contact.id !== action.payload);
         state.error = null;
       })
       .addCase(deleteContact.rejected, (state, action) => {
@@ -61,17 +55,21 @@ const contactsSlice = createSlice({
   },
 });
 
+export const selectContacts = (state) => state.contacts.items;
+export const selectLoading = (state) => state.contacts.loading;
+export const selectError = (state) => state.contacts.error;
+
 
 export const selectFilteredContacts = createSelector(
-  (state) => state.contacts.items,   
-  (state) => state.contacts.filter, 
+  [
+    (state) => state.contacts.items, 
+    (state) => state.filters.name 
+  ],
   (contacts, filter) => {
     return contacts.filter((contact) =>
-      contact.name.toLowerCase().includes(filter.toLowerCase())  
+      contact.name.toLowerCase().includes(filter.toLowerCase())
     );
   }
 );
-
-export const { setFilter } = contactsSlice.actions;
 
 export default contactsSlice.reducer;

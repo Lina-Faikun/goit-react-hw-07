@@ -2,8 +2,9 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import css from './ContactForm.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from '../../redux/contacts/contactsSlice';
-import { selectContacts } from '../../redux/contacts/selectors';
+import { addContact } from '../../redux/contacts/contactsOps';
+
+import { selectContacts } from '../../redux/contacts/selectors'; 
 
 const ContactForm = () => {
   const dispatch = useDispatch();
@@ -42,16 +43,14 @@ const ContactForm = () => {
       onSubmit={handleSubmit}
     >
       <Form className={css.form}>
-        <label>
-          Name:
-          <Field type="text" name="name" className={css.input} />
-          <ErrorMessage name="name" component="div" className={css.error} />
-        </label>
-        <label>
-          Number:
-          <Field type="text" name="number" className={css.input} />
-          <ErrorMessage name="number" component="div" className={css.error} />
-        </label>
+        <label htmlFor="name">Name:</label>
+        <Field type="text" name="name" id="name" className={css.input} />
+        <ErrorMessage name="name" component="div" className={css.error} />
+
+        <label htmlFor="number">Number:</label>
+        <Field type="text" name="number" id="number" className={css.input} />
+        <ErrorMessage name="number" component="div" className={css.error} />
+
         <button className={css.button} type="submit">
           Add Contact
         </button>
