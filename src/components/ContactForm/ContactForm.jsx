@@ -2,8 +2,8 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import css from './ContactForm.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from '../../redux/contactsSlice';
-import { selectContacts } from '../../redux/selectors';
+import { addContact } from '../../redux/contacts/contactsSlice';
+import { selectContacts } from '../../redux/contacts/selectors';
 
 const ContactForm = () => {
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ const ContactForm = () => {
       return;
     }
 
-    dispatch(addContact(values.name, values.number));
+    dispatch(addContact({ name: values.name, number: values.number }));
     resetForm();
   };
 
